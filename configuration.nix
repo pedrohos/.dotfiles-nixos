@@ -14,8 +14,21 @@ in
       (import "${home-manager}/nixos")
   ];
 
-  #programs.hyprland.enable = true;
+  # Hyprland Wayland compositor
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
 
+  # Enable the X11 windowing system.
+  services.xserver.enable = true;
+
+  # Enable the GNOME Desktop Environment.
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.gdm.wayland = true;
+  #services.xserver.desktopManager.gnome.enable = true;
+
+  # Initial config the user
   users.users.pedrohos = {
     isNormalUser = true;
     shell = pkgs.zsh;
@@ -23,8 +36,28 @@ in
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
-  programs.zsh.enable = true;
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    # Hyprland packages
+    waybar # Top bar with json and css
+    dunst # Notifications 
+    libnotify # Dependency for dusnt
+    swww # Wayland daemons
+    kitty # Terminal emulator
+    rofi-wayland # Window siwtcher
+    networkmanagerapplet # Network manager applet available on the waybar
 
+    vim
+    gnome-icon-theme
+  ];
+  
+  # General package installation & configuration
+  programs = {
+    zsh.enable = true;
+    steam.enable = true;
+    firefox.enable = true;
+  };
 
   # Home manager initial config
   home-manager.users.pedrohos = import ./home.nix;
@@ -64,12 +97,6 @@ in
     LC_CTYPE = "pt_BR.UTF-8"; # Fix the cedilla in us-intl
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -78,7 +105,7 @@ in
   };
 
   # Configure console keymap
-  console.keyMap = "dvorak";
+  console.keyMap = "us";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -102,36 +129,34 @@ in
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Steam
-  programs.steam = {
+  services.neo4j = {
     enable = true;
+    directories.data = "/var/lib/neo4j/data";
+    bolt.tlsLevel = "DISABLED";
   };
-
-  #services.neo4j = {
-  #  enable = true;
-  #  dataDir = "/var/lib/neo4j/data";
-  #  logsDir = "/var/log/neo4j";
-  #  config = {
-  #    "dbms.directories.logs" = "/var/log/neo4j";
-  #    "dbms.directories.data" = "/var/lib/neo4j/data";
-  #  };
-  #};
 
   # For 32-bit games (required on 64-bit systems)
   hardware.opengl.driSupport32Bit = true;
   hardware.pulseaudio.support32Bit = true;
 
-  # Install firefox.
-  programs.firefox.enable = true;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim
-  ];
+  # Handles screen sharing and other interactions between apps
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
+
+  environment.sessionVariables = {
+    # Hint electron apps to use wayland
+    NIXOS_OZONE_WL = "1"; 
+  };
+
+  hardware = {
+    opengl.enable = true;
+    nvidia.modesetting.enable = true;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -140,6 +165,11 @@ in
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+
+  # Setups gnome-keyring-daemon to save application secrets securily
+  services.gnome.gnome-keyring.enable = true;
+  # This will auto-decrypt it on login
+  security.pam.services.login.enableGnomeKeyring = true;
 
   # List services that you want to enable:
 
