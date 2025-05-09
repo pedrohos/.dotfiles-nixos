@@ -2,24 +2,34 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
-  home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-24.11.tar.gz;
+  home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/master.tar.gz;
 in
 {
   imports =
   [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      #(import "${home-manager}/nixos")
+      ./apple-silicon-support
       (import "${home-manager}/nixos")
   ];
-
+  #nixpkgs.config.allowUnsupportedSystem = true; 
+  #nixpkgs.config.allowUnsupportedSystem = true; 
+  hardware.asahi = {
+    withRust = true;
+    peripheralFirmwareDirectory = /etc/nixos/firmware;
+    useExperimentalGPUDriver = true;
+    experimentalGPUInstallMode = "replace";
+    setupAsahiSound = true;
+  };
+  #pkgs.config.allowUnsupportedSystems = true; 
   # Hyprland Wayland compositor
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
   };
-
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
@@ -51,25 +61,29 @@ in
     vim
     gnome-icon-theme
   ];
-  
+
   # General package installation & configuration
   programs = {
     zsh.enable = true;
-    steam.enable = true;
+   # steam.enable = true;
     firefox.enable = true;
   };
 
   # Home manager initial config
   home-manager.users.pedrohos = import ./home.nix;
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
+  #home-manager.useGlobalPkgs = true;
+  #home-manager.useUserPackages = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.canTouchEfiVariables = false;
 
   networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  #networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.wireless.iwd = {
+    enable = true;
+    settings.General.EnableNetworkConfiguration = true;
+  };
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -111,20 +125,20 @@ in
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+  #hardware.pulseaudio.enable = false;
+  #security.rtkit.enable = true;
+  #services.pipewire = {
+  #  enable = true;
+  #  alsa.enable = true;
+  #  alsa.support32Bit = true;
+  #  pulse.enable = true;
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     #media-session.enable = true;
-  };
+  #};
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -136,8 +150,8 @@ in
   };
 
   # For 32-bit games (required on 64-bit systems)
-  hardware.opengl.driSupport32Bit = true;
-  hardware.pulseaudio.support32Bit = true;
+  #hardware.opengl.driSupport32Bit = true;
+  #hardware.pulseaudio.support32Bit = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -151,6 +165,11 @@ in
   environment.sessionVariables = {
     # Hint electron apps to use wayland
     NIXOS_OZONE_WL = "1"; 
+    NIXPKGS_ALLOW_UNFREE = "1";
+  };
+  
+  environment.etc = {
+    "resolv.conf".text = "nameserver 1.1.1.1\n";
   };
 
   hardware = {
@@ -188,5 +207,5 @@ in
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 }

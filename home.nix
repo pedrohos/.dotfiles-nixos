@@ -21,14 +21,14 @@
     bitwarden
     zsh
     oh-my-zsh
-    discord
+    #discord
     anydesk
-    steam-run
+    #steam-run
     python312Packages.conda
     python312Full
     conda
     neo4j
-    slack
+    #slack
     unzip
   ];
 
@@ -36,6 +36,9 @@
     enable = true;
     userName = "Pedro Silva";
     userEmail = "pedro.henrique.silva@ccc.ufcg.edu.br";
+    extraConfig = {
+      safe.directory = "/home/pedrohos/.dotfiles";
+    };
   };
 
   home.sessionVariables = {
