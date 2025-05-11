@@ -1,6 +1,5 @@
 {
   description = "flake";
-
   
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";

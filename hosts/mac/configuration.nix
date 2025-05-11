@@ -11,7 +11,7 @@
   imports =
   [ # Include the results of the hardware scan.
       ../../nixosModules/default.nix
-      ./hardware-configuration.nix
+      /etc/nixos/hardware-configuration.nix
       /etc/nixos/apple-silicon-support
       #(import "${home-manager}/nixos")
   ];

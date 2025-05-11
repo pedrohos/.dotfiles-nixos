@@ -1,16 +1,33 @@
 # Dotfiles for NixOS
 
-Commands to update env:
+## Installation
+
+### Step 1 - Prepare env
+Commands to update env and install NixOS config for mac:
+```sudo ./prepare-mac.sh```
+
+Commands to update env and install NixOS config for other system:
+```sudo ./prepare-other.sh```
+
+### Step 2 - Install
+For Mac:
 ```bash
-sudo nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
-sudo nix-channel --update
-sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-24.11.tar.gz home-manager
-sudo nix-channel --update
-
-git clone git@github.com:pedrohos/.dotfiles-nixos.git ~/.dotfiles
-sudo ln -sf ~/.dotfiles/configuration.nix /etc/nixos/configuration.nix
-sudo ln -sf /etc/nixos/hardware-configuration.nix ~/.dotfiles/hardware-configuration.nix
-mkdir -p ~/.config/home-manager && ln -s ~/.config/home-manager/home.nix ~/.config/home-manager/home.nix
-
-sudo nixos-rebuild switch
+sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild build --flake .#nixos-mac --impure --show-trace
 ```
+
+For desktop:
+```bash
+sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild build --flake .#nixos-desktop --impure --show-trace
+```
+
+For ROG:
+```bash
+sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild build --flake .#nixos-rog --impure --show-trace
+```
+### Step 3 - Prepare env again for current user
+The script of prepraration should be rerun after the user being setup.
+Commands to update env and install NixOS config for mac:
+```sudo ./prepare-mac.sh```
+
+Commands to update env and install NixOS config for other system:
+```sudo ./prepare-other.sh```
