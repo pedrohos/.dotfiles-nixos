@@ -13,7 +13,7 @@
   ];
 
   # Home manager initial config
-  home-manager.users.pedrohos = import /home/pedrohos/.dotfiles/home.nix;
+  #home-manager.users.pedrohos = import /home/pedrohos/.dotfiles/home.nix;
 
   #nixpkgs.config.allowUnsupportedSystem = true; 
   #nixpkgs.config.allowUnsupportedSystem = true; 

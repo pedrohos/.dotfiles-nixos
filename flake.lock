@@ -1,5 +1,45 @@
 {
   "nodes": {
+    "asahi-widevine": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723388729,
+        "narHash": "sha256-ox2xU7PraSexer7+M+4Bc5gxpRYr1d4elh1e6erpsUg=",
+        "owner": "AsahiLinux",
+        "repo": "widevine-installer",
+        "rev": "eab8c668ad3f9db27a444ee1f94b82d8f3ab5336",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AsahiLinux",
+        "repo": "widevine-installer",
+        "type": "github"
+      }
+    },
+    "chromium-widevine": {
+      "inputs": {
+        "asahi-widevine": "asahi-widevine",
+        "lacros": "lacros",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dir": "chromium-widevine",
+        "lastModified": 1747008476,
+        "narHash": "sha256-FFYfAF3GMrkHIiW3/px0AAugFPBm3s8ubH1YsiilNIg=",
+        "owner": "heywoodlh",
+        "repo": "flakes",
+        "rev": "ff765d2273ba35f0645e57e017ebe747d5748ff6",
+        "type": "github"
+      },
+      "original": {
+        "dir": "chromium-widevine",
+        "owner": "heywoodlh",
+        "repo": "flakes",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -15,6 +55,18 @@
       "original": {
         "type": "tarball",
         "url": "https://github.com/nix-community/home-manager/archive/master.tar.gz"
+      }
+    },
+    "lacros": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-+BvpWlYv4E0XSmnL0gGISUp0WflexbKtYnNE293nik0=",
+        "type": "file",
+        "url": "https://commondatastorage.googleapis.com/chromeos-localmirror/distfiles/chromeos-lacros-arm64-squash-zstd-120.0.6098.0"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://commondatastorage.googleapis.com/chromeos-localmirror/distfiles/chromeos-lacros-arm64-squash-zstd-120.0.6098.0"
       }
     },
     "nixpkgs": {
@@ -51,6 +103,7 @@
     },
     "root": {
       "inputs": {
+        "chromium-widevine": "chromium-widevine",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable"
