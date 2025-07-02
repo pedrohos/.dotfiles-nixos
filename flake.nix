@@ -12,9 +12,13 @@
       url = "github:heywoodlh/flakes?dir=chromium-widevine"; 
       inputs.nixpkgs.follows = "nixpkgs";  # Ensure it uses the same nixpkgs
     };
+    apple-silicon-support = {
+      url = "github:tpwrules/nixos-apple-silicon/main";
+      flake = false; 
+    };
   };
   
-  outputs = { self, nixpkgs, nixpkgs-unstable, chromium-widevine, home-manager, ...}@inputs: let 
+  outputs = { self, nixpkgs, nixpkgs-unstable, chromium-widevine, home-manager, apple-silicon-support, ...}@inputs: let 
     pkgs-unstable = import nixpkgs-unstable {
       config.allowUnfree = true;
     };
@@ -55,6 +59,7 @@
         };
         modules = [
           ./hosts/mac/configuration.nix
+          ./nixosModules/default.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -67,7 +72,6 @@
             # Home manager initial config
             home-manager.users.pedrohos = import /home/pedrohos/.dotfiles/home.nix;
           }
-          ./nixosModules
         ];
       };
     };

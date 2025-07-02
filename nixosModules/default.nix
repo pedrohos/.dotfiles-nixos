@@ -22,15 +22,23 @@
   # Initial config the user
   users.users.pedrohos = {
     isNormalUser = true;
-    #shell = lib.mkDefault pkgs.zsh;
+    shell = lib.mkForce pkgs.zsh;
     description = "pedrohos";
     extraGroups = [ "networkmanager" "wheel" ];
   };
-
+ 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # INSERT HERE PKGS
+    jq # Needed for dynamic borders
+    socat # Needed for dynamic borders
+    playerctl # Needed by hyprland to control volumes with laptop media controls
+    wget
+  ];
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
   ];
 
   #home-manager.useGlobalPkgs = true;

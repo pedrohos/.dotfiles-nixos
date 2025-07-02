@@ -21,20 +21,17 @@
     zsh
     oh-my-zsh
     anydesk
+    #rofi-screenshot
+    hyprshot
     #steam-run
     python312Packages.conda
     python312Full
     conda
     neo4j
-    slack
+    #slack
     unzip
   ];
 
-/*
-  home.packages = with pkgs-unstable; [
-    legcord
-  ];
-*/
   programs.git = {
     enable = true;
     userName = "Pedro Silva";
@@ -119,6 +116,23 @@
       Keywords=music;
       Icon=/home/pedrohos/.dotfiles/icons/spotify.svg
       Categories=Music;
+    '';
+  };
+
+  # Slack
+  home.file.".local/share/applications/slack.desktop" = {
+    enable = system == "aarch64-linux";
+    text = ''
+      [Desktop Entry]
+      Name=Slack
+      GenericName=music
+      Comment=Listen to Spotify
+      Exec=${chromium-widevine-pkg}/bin/chromium --app=https://app.slack.com/client
+      Terminal=false
+      Type=Application
+      Keywords=utility;
+      Icon=/home/pedrohos/.dotfiles/icons/slack.svg
+      Categories=Utility;
     '';
   };
 }

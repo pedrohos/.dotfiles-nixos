@@ -10,9 +10,10 @@
 {
   imports =
   [ # Include the results of the hardware scan.
-      ../../nixosModules/default.nix
       /etc/nixos/hardware-configuration.nix
+      #<apple-silicon-support-apple-silicon-support>
       /etc/nixos/apple-silicon-support
+      #../../nixosModules/default.nix
       #(import "${home-manager}/nixos")
   ];
 
@@ -28,6 +29,8 @@
     opengl.enable = true;
     nvidia.modesetting.enable = true;
   };
+
+  config.boot.kernelParams = [ "brcmfmac.feature_disable=0x82000" ];
 
   config.steamModule.enable = false;
 
@@ -75,9 +78,18 @@
     etc = {
       "resolv.conf".text = "nameserver 1.1.1.1\n";
     };
-    systemPackages = with pkgs; [
+    #systemPackages = with pkgs; [
       # ADD PACKAGES HERE
-    ];
+    #];
+  };
+
+  config.swapDevices = [{
+    device = "/var/lib/swapfile";
+    size = 16 * 1024;
+  }];
+  
+  config.boot.kernel.sysctl = {
+    "vm.swappiness" = 10;
   };
 
   # Some programs need SUID wrappers, can be configured further or are

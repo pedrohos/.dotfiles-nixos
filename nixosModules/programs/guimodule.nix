@@ -7,11 +7,14 @@
     waybar # Top bar with json and css
     dunst # Notifications 
     libnotify # Dependency for dusnt
-    swww # Wayland daemons
+    swww # Wayland wallpaper daemon
     kitty # Terminal emulator
-    rofi-wayland # Window siwtcher
+    rofi-wayland # Window switcher
     networkmanagerapplet # Network manager applet available on the waybar
     gnome-icon-theme
+
+    # Needed for mechabar theme
+    brightnessctl # Control brightness
   ];
 
   # Hyprland Wayland compositor

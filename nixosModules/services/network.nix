@@ -11,6 +11,7 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  #networking.wireless.enable = true;
 
   networking.wireless.iwd = {
     enable = true;
@@ -18,6 +19,11 @@
   };
 
   environment.etc = {
-    "resolv.conf".text = "nameserver 1.1.1.1\n";
+    "resolv.conf".text = 
+''nameserver 1.1.1.1
+nameserver 1.0.0.1
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+'';
   };
 }
